@@ -3,10 +3,6 @@
 
 #include "State/GameState.hpp"
 
-class Entity;
-class TextTure;
-class Button;
-
 class HomeState : public GameState
 {
 public:
