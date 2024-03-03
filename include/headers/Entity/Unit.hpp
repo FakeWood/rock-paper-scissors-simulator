@@ -13,11 +13,13 @@ enum Type
 class Unit : public Entity
 {
 public:
-    Unit(Type p_type, int p_srcWidth, int p_srcHeight, int p_xPos, int p_yPos, int p_destWidth, int p_destHeight);
+    Unit(Type p_type, int p_xPos, int p_yPos);
     ~Unit();
 
     Type getType() { return type; }
     void setType(Type p_type);
+    void update() override;
+    void render() override;
 
 private:
     Type type;
@@ -25,7 +27,6 @@ private:
     Type loseType;
     static SDL_Texture *imgs[3];
 
-    static std::pair<double, double> randBorn(int centerX, int centerY, int p_diameter); // random a pos in a circle
     static Unit *findShortest();
     static void chase();
 };

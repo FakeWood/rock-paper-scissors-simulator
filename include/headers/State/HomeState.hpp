@@ -18,8 +18,6 @@ public:
 private:
     static HomeState sHomeState;
     HomeState();
-
-    std::vector<Entity *> entities;
 };
 
 #endif

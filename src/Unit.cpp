@@ -1,6 +1,6 @@
 #include "Entity\Unit.hpp"
 
-Unit::Unit(Type p_type, int p_srcWidth, int p_srcHeight, int p_xPos, int p_yPos, int p_destWidth, int p_destHeight)
+Unit::Unit(Type p_type, int p_xPos, int p_yPos)
 {
     type = p_type;
 
@@ -20,26 +20,47 @@ Unit::Unit(Type p_type, int p_srcWidth, int p_srcHeight, int p_xPos, int p_yPos,
         break;
     }
 
-    srcRect = {0, 0, p_srcWidth, p_srcHeight};
+    srcRect = {0, 0, 18, 18};
     xPos = p_xPos;
     yPos = p_yPos;
-    width = p_destWidth;
-    height = p_destHeight;
+    width = 36;
+    height = 36;
 
     destRect = {(int)xPos, (int)yPos, width, height};
+
+    if (imgs[ROCK] == nullptr)
+    {
+        imgs[ROCK] = IMG_LoadTexture(Global::gRenderer, "./res/unit/rock.png");
+        if (imgs[ROCK] == nullptr)
+        {
+            printf("Failed to load Rock Texture!\nError: %s\n", IMG_GetError());
+        }
+    }
+
+    if (imgs[PAPER] == nullptr)
+    {
+        imgs[PAPER] = IMG_LoadTexture(Global::gRenderer, "./res/unit/paper.png");
+        if (imgs[PAPER] == nullptr)
+        {
+            printf("Failed to load Paper Texture!\nError: %s\n", IMG_GetError());
+        }
+    }
+
+    if (imgs[SCISSORS] == nullptr)
+    {
+        imgs[SCISSORS] = IMG_LoadTexture(Global::gRenderer, "./res/unit/scissors.png");
+        if (imgs[SCISSORS] == nullptr)
+        {
+            printf("Failed to load Scissors Texture!\nError: %s\n", IMG_GetError());
+        }
+    }
 }
 
-std::pair<double, double> Unit::randBorn(int centerX, int centerY, int p_diameter)
+void Unit::update()
 {
-    double X, Y;
-    double length;
-    double degree;
+}
 
-    srand(time(NULL));
-    length = rand() % (p_diameter / 2);
-    degree = rand() % 360;
-    sincos(degree * M_PI / 180, &Y, &X);
-    X *= length;
-    Y *= length;
-    return std::pair(X, Y);
+void Unit::render()
+{
+    SDL_RenderCopy(Global::gRenderer, objTexture, &srcRect, &destRect);
 }

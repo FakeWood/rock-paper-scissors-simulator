@@ -32,6 +32,8 @@ private:
     // TextTure* tHeight = nullptr;
     ScorePanel *scorePanel = nullptr;
     Entity *background = nullptr;
+
+    static std::pair<double, double> randBorn(int centerX, int centerY, int p_diameter); // random a pos in a circle
 };
 
 #endif
