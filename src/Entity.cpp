@@ -23,11 +23,6 @@ Entity::Entity(const char *p_textureDir, int p_srcWidth, int p_srcHeight, int p_
     height = p_destHeight;
 
     destRect = {(int)xPos, (int)yPos, width, height};
-
-    if (SDL_SetTextureBlendMode(objTexture, SDL_BLENDMODE_BLEND) != 0)
-    {
-        printf("Failed to set objTexture Blend Mode!\nError: %s\n", SDL_GetError());
-    }
 }
 
 Entity::~Entity()
