@@ -1,4 +1,4 @@
-#include "State/StateMachine.hpp"
+#include "State\StateMachine.hpp"
 
 GameState *StateMachine::currentState = nullptr;
 GameState *StateMachine::nextState = nullptr;
