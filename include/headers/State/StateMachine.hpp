@@ -1,12 +1,6 @@
 #ifndef STATEMACHINE_HPP
 #define STATEMACHINE_HPP
 
-#include "Global.hpp"
-#include "State/GameState.hpp"
-#include "State/HomeState.hpp"
-#include "State/PlayState.hpp"
-#include "State/ExitState.hpp"
-
 class StateMachine
 {
 public:

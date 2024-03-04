@@ -1,13 +1,9 @@
 #ifndef PLAYSTATE_HPP
 #define PLAYSTATE_HPP
 
-#include "State/GameState.hpp"
+#include "State\GameState.hpp"
 
 class Entity;
-class TextTure;
-class Player;
-class Animator;
-class ScorePanel;
 
 class PlayState : public GameState
 {
@@ -28,9 +24,6 @@ private:
 
     std::vector<Entity *> entities;
 
-    Player *player = nullptr;
-    // TextTure* tHeight = nullptr;
-    ScorePanel *scorePanel = nullptr;
     Entity *background = nullptr;
 
     static std::pair<double, double> randBorn(int centerX, int centerY, int p_diameter); // random a pos in a circle

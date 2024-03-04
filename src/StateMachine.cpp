@@ -1,4 +1,9 @@
 #include "State\StateMachine.hpp"
+#include "Global.hpp"
+#include "State\GameState.hpp"
+#include "State\HomeState.hpp"
+#include "State\PlayState.hpp"
+#include "State\ExitState.hpp"
 
 GameState *StateMachine::currentState = nullptr;
 GameState *StateMachine::nextState = nullptr;
@@ -62,7 +67,7 @@ bool StateMachine::init()
     }
     SDL_SetRenderDrawColor(Global::gRenderer, 255, 255, 255, 255);
 
-    currentState = HomeState::get();
+    currentState = PlayState::get();
     currentState->enter();
 
     nextState = nullptr;

@@ -1,6 +1,6 @@
 #include "GameLoop.hpp"
 #include "Global.hpp"
-#include "StateMachine.hpp"
+#include "State\StateMachine.hpp"
 
 int GameLoop::gameLoop()
 {
@@ -52,4 +52,6 @@ int GameLoop::gameLoop()
     }
 
     StateMachine::close();
+
+    return 0;
 }

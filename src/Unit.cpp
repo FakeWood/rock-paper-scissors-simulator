@@ -58,9 +58,10 @@ Unit::Unit(Type p_type, int p_xPos, int p_yPos)
 
 void Unit::update()
 {
+    Entity::update();
 }
 
 void Unit::render()
 {
-    SDL_RenderCopy(Global::gRenderer, objTexture, &srcRect, &destRect);
+    SDL_RenderCopy(Global::gRenderer, imgs[type], &srcRect, &destRect);
 }
