@@ -1,6 +1,7 @@
 #include "GameLoop.hpp"
 #include "Global.hpp"
 #include "State\StateMachine.hpp"
+#include "State\ExitState.hpp"
 
 int GameLoop::gameLoop()
 {

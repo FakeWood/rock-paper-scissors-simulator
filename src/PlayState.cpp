@@ -1,5 +1,6 @@
 #include "State\PlayState.hpp"
 #include "State\StateMachine.hpp"
+#include "State\ExitState.hpp"
 
 PlayState PlayState::sPlayState;
 
@@ -38,26 +39,11 @@ void PlayState::handleEvent(SDL_Event &p_e)
 
 void PlayState::update()
 {
-    if (!scorePanel->getActive())
-    {
-        player->update();
-
-        // tHeight->setText( ( "Height:  " + std::to_string( (int)(Global::gGROUND_LEVEL - player->getY()) / 100 ) ).c_str() );
-        // tHeight->update();
-    }
-
-    if (player->checkLanded())
-        scorePanel->open(player->getSafe());
-
-    scorePanel->update();
 }
 
 void PlayState::render()
 {
-    background->render();
-    player->render();
-    // tHeight->render();
-    scorePanel->render();
+    // background->render();
 }
 
 std::pair<double, double> PlayState::randBorn(int centerX, int centerY, int p_diameter)

@@ -1,5 +1,7 @@
 #include "Entity\Unit.hpp"
 
+SDL_Texture *Unit::imgs[3] = {0};
+
 Unit::Unit(Type p_type, int p_xPos, int p_yPos)
 {
     type = p_type;
@@ -27,32 +29,26 @@ Unit::Unit(Type p_type, int p_xPos, int p_yPos)
     height = 36;
 
     destRect = {(int)xPos, (int)yPos, width, height};
+}
 
+void Unit::imgsInit()
+{
+    imgs[ROCK] = IMG_LoadTexture(Global::gRenderer, "./res/unit/rock.png");
     if (imgs[ROCK] == nullptr)
     {
-        imgs[ROCK] = IMG_LoadTexture(Global::gRenderer, "./res/unit/rock.png");
-        if (imgs[ROCK] == nullptr)
-        {
-            printf("Failed to load Rock Texture!\nError: %s\n", IMG_GetError());
-        }
+        printf("Failed to load Rock Texture!\nError: %s\n", IMG_GetError());
     }
 
+    imgs[PAPER] = IMG_LoadTexture(Global::gRenderer, "./res/unit/paper.png");
     if (imgs[PAPER] == nullptr)
     {
-        imgs[PAPER] = IMG_LoadTexture(Global::gRenderer, "./res/unit/paper.png");
-        if (imgs[PAPER] == nullptr)
-        {
-            printf("Failed to load Paper Texture!\nError: %s\n", IMG_GetError());
-        }
+        printf("Failed to load Paper Texture!\nError: %s\n", IMG_GetError());
     }
 
+    imgs[SCISSORS] = IMG_LoadTexture(Global::gRenderer, "./res/unit/scissors.png");
     if (imgs[SCISSORS] == nullptr)
     {
-        imgs[SCISSORS] = IMG_LoadTexture(Global::gRenderer, "./res/unit/scissors.png");
-        if (imgs[SCISSORS] == nullptr)
-        {
-            printf("Failed to load Scissors Texture!\nError: %s\n", IMG_GetError());
-        }
+        printf("Failed to load Scissors Texture!\nError: %s\n", IMG_GetError());
     }
 }
 

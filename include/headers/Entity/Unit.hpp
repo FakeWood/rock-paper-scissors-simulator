@@ -20,13 +20,13 @@ public:
     void setType(Type p_type);
     void update() override;
     void render() override;
+    static void imgsInit();
 
 private:
     Type type;
     Type winType;
     Type loseType;
     static SDL_Texture *imgs[3];
-
     static Unit *findShortest();
     static void chase();
 };

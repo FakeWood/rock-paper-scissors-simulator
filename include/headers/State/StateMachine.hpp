@@ -1,6 +1,8 @@
 #ifndef STATEMACHINE_HPP
 #define STATEMACHINE_HPP
 
+class GameState;
+
 class StateMachine
 {
 public:
