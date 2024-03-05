@@ -4,6 +4,7 @@
 #include "State\GameState.hpp"
 
 class Entity;
+class Unit;
 
 class PlayState : public GameState
 {
@@ -22,11 +23,11 @@ private:
 
     PlayState();
 
-    std::vector<Entity *> entities;
-    std::vector<Entity *> units;
+    std::vector<Unit *> units;
     Entity *background = nullptr;
 
-    static std::pair<double, double> randBorn(int centerX, int centerY, int p_diameter); // random a pos in a circle
+    std::pair<double, double> randBorn(int centerX, int centerY, int p_diameter); // random a pos in a circle
+    void updateUnits();
 };
 
 #endif

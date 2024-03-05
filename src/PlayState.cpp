@@ -21,19 +21,19 @@ bool PlayState::enter()
     for (int i = 0; i < 10; i++)
     {
         std::pair<double, double> pos = randBorn(200, 400, 200);
-        entities.emplace_back(new Unit(ROCK, (int)pos.first, (int)pos.second));
+        units.emplace_back(new Unit(ROCK, (int)pos.first, (int)pos.second));
     }
 
     for (int i = 0; i < 10; i++)
     {
         std::pair<double, double> pos = randBorn(400, 150, 200);
-        entities.emplace_back(new Unit(PAPER, (int)pos.first, (int)pos.second));
+        units.emplace_back(new Unit(PAPER, (int)pos.first, (int)pos.second));
     }
 
     for (int i = 0; i < 10; i++)
     {
         std::pair<double, double> pos = randBorn(600, 450, 200);
-        entities.emplace_back(new Unit(SCISSORS, (int)pos.first, (int)pos.second));
+        units.emplace_back(new Unit(SCISSORS, (int)pos.first, (int)pos.second));
     }
     return true;
 }
@@ -59,13 +59,18 @@ void PlayState::handleEvent(SDL_Event &p_e)
 
 void PlayState::update()
 {
+    updateUnits();
+    for (Unit *u : units)
+    {
+        u->update();
+    }
 }
 
 void PlayState::render()
 {
-    for (Entity *e : entities)
+    for (Unit *u : units)
     {
-        e->render();
+        u->render();
     }
     // background->render();
 }
@@ -82,4 +87,65 @@ std::pair<double, double> PlayState::randBorn(int centerX, int centerY, int p_di
     X = X * length + centerX;
     Y = Y * length + centerY;
     return std::pair<double, double>(X, Y);
+}
+
+void PlayState::updateUnits()
+{
+    for (Unit *cur : units)
+    {
+        double winDist = Global::gSCREEN_WIDTH;
+        double loseDist = Global::gSCREEN_WIDTH;
+        double tempDist = 0.0;
+
+        Unit *winUnitNear = nullptr;
+        Unit *loseUnitNear = nullptr;
+
+        // Find the nearest
+        for (Unit *u : units)
+        {
+            if (cur->getType() == u->getType())
+                continue;
+            tempDist = hypot(u->getX() - cur->getX(), u->getY() - cur->getY()); // caculate the distance
+
+            if (cur->getWinType() == u->getType() && tempDist < winDist)
+            {
+                winDist = tempDist;
+                winUnitNear = u;
+            }
+            else if (cur->getLoseType() == u->getType() && tempDist < loseDist)
+            {
+                loseDist = tempDist;
+                loseUnitNear = u;
+            }
+        }
+
+        double x;
+        double y;
+        if (winDist < loseDist)
+        {
+            if (winDist < cur->getColli().radius * 2)
+            {
+                winUnitNear->setType(cur->getType());
+            }
+            else
+            {
+                x = (winUnitNear->getX() - cur->getX()) / winDist;
+                y = (winUnitNear->getY() - cur->getY()) / winDist;
+                cur->setDir(std::pair<double, double>(x, y));
+            }
+        }
+        else if (loseDist < winDist)
+        {
+            if (loseDist < cur->getColli().radius * 2)
+            {
+                cur->setType(cur->getLoseType());
+            }
+            // else
+            // {
+            //     x = (cur->getX() - loseUnitNear->getX()) / loseDist;
+            //     y = (cur->getY() - loseUnitNear->getY()) / loseDist;
+            //     cur->setDir(std::pair<double, double>(x, y));
+            // }
+        }
+    }
 }

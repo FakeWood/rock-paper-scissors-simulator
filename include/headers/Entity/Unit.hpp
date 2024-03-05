@@ -10,6 +10,13 @@ enum Type
     SCISSORS
 };
 
+struct Circle
+{
+    double x;
+    double y;
+    double radius;
+};
+
 class Unit : public Entity
 {
 public:
@@ -17,18 +24,28 @@ public:
     ~Unit();
 
     Type getType() { return type; }
+    Type getWinType() { return winType; }
+    Type getLoseType() { return loseType; }
+    Circle getColli() { return cirCollider; }
+
     void setType(Type p_type);
+    void setDir(std::pair<double, double> p_dir) { dir = p_dir; }
+    void shiftCollider();
+
     void update() override;
     void render() override;
     static void imgsInit();
 
 private:
+    double speed;
     Type type;
     Type winType;
     Type loseType;
+    std::pair<double, double> dir;
+    Circle cirCollider;
     static SDL_Texture *imgs[3];
     static Unit *findShortest();
-    static void chase();
+    void move();
 };
 
 #endif
