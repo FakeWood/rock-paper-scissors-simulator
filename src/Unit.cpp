@@ -92,26 +92,18 @@ void Unit::move()
     tmpX += xPos;
     tmpY += yPos;
 
-    if (tmpX < 0)
+    if (tmpX < 0 || (tmpX + width) > Global::gSCREEN_WIDTH)
     {
-        xPos = -tmpX;
-    }
-    else if ((tmpX + width) > Global::gSCREEN_WIDTH)
-    {
-        xPos = tmpX - xPos * 2;
+        dir.first = -dir.first;
     }
     else
     {
         xPos = tmpX;
     }
 
-    if (tmpY < 0)
+    if (tmpY < 0 || (tmpY + width) > Global::gSCREEN_HEIGHT)
     {
-        yPos = -tmpY;
-    }
-    else if ((tmpY + width) > Global::gSCREEN_HEIGHT)
-    {
-        yPos = tmpY - yPos * 2;
+        dir.second = -dir.second;
     }
     else
     {
