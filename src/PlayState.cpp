@@ -20,19 +20,19 @@ bool PlayState::enter()
     Unit::imgsInit();
     for (int i = 0; i < 10; i++)
     {
-        std::pair<double, double> pos = randBorn(200, 400, 200);
+        std::pair<double, double> pos = randBorn(Global::gSCREEN_WIDTH / 2, Global::gSCREEN_HEIGHT / 2, 600);
         units.emplace_back(new Unit(ROCK, (int)pos.first, (int)pos.second));
     }
 
     for (int i = 0; i < 10; i++)
     {
-        std::pair<double, double> pos = randBorn(400, 150, 200);
+        std::pair<double, double> pos = randBorn(Global::gSCREEN_WIDTH / 2, Global::gSCREEN_HEIGHT / 2, 600);
         units.emplace_back(new Unit(PAPER, (int)pos.first, (int)pos.second));
     }
 
     for (int i = 0; i < 10; i++)
     {
-        std::pair<double, double> pos = randBorn(600, 450, 200);
+        std::pair<double, double> pos = randBorn(Global::gSCREEN_WIDTH / 2, Global::gSCREEN_HEIGHT / 2, 600);
         units.emplace_back(new Unit(SCISSORS, (int)pos.first, (int)pos.second));
     }
     return true;
