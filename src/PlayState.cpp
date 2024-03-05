@@ -94,17 +94,18 @@ void PlayState::updateUnits()
     for (Unit *cur : units)
     {
         double winDist = Global::gSCREEN_WIDTH;
-        double loseDist = Global::gSCREEN_WIDTH;
         double tempDist = 0.0;
 
         Unit *winUnitNear = nullptr;
-        Unit *loseUnitNear = nullptr;
 
         // Find the nearest
         for (Unit *u : units)
         {
             if (cur->getType() == u->getType())
+            {
                 continue;
+            }
+
             tempDist = hypot(u->getX() - cur->getX(), u->getY() - cur->getY()); // caculate the distance
 
             if (cur->getWinType() == u->getType() && tempDist < winDist)
@@ -112,40 +113,25 @@ void PlayState::updateUnits()
                 winDist = tempDist;
                 winUnitNear = u;
             }
-            else if (cur->getLoseType() == u->getType() && tempDist < loseDist)
-            {
-                loseDist = tempDist;
-                loseUnitNear = u;
-            }
+        }
+
+        if (winUnitNear == nullptr)
+        {
+            continue;
         }
 
         double x;
         double y;
-        if (winDist < loseDist)
+
+        if (winDist < cur->getColli().radius * 2)
         {
-            if (winDist < cur->getColli().radius * 2)
-            {
-                winUnitNear->setType(cur->getType());
-            }
-            else
-            {
-                x = (winUnitNear->getX() - cur->getX()) / winDist;
-                y = (winUnitNear->getY() - cur->getY()) / winDist;
-                cur->setDir(std::pair<double, double>(x, y));
-            }
+            winUnitNear->setType(cur->getType());
         }
-        else if (loseDist < winDist)
+        else
         {
-            if (loseDist < cur->getColli().radius * 2)
-            {
-                cur->setType(cur->getLoseType());
-            }
-            // else
-            // {
-            //     x = (cur->getX() - loseUnitNear->getX()) / loseDist;
-            //     y = (cur->getY() - loseUnitNear->getY()) / loseDist;
-            //     cur->setDir(std::pair<double, double>(x, y));
-            // }
+            x = (winUnitNear->getX() - cur->getX()) / winDist;
+            y = (winUnitNear->getY() - cur->getY()) / winDist;
+            cur->setDir(std::pair<double, double>(x, y));
         }
     }
 }
