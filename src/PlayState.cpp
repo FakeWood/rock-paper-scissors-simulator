@@ -1,6 +1,7 @@
 #include "State\PlayState.hpp"
 #include "State\StateMachine.hpp"
 #include "State\ExitState.hpp"
+#include "Entity\Unit.hpp"
 
 PlayState PlayState::sPlayState;
 
@@ -15,6 +16,15 @@ PlayState *PlayState::get()
 
 bool PlayState::enter()
 {
+    srand(time(NULL));
+    Unit::imgsInit();
+    for (int i = 0; i < 10; i++)
+    {
+        std::pair<double, double> pos = randBorn(300, 300, 200);
+        entities.emplace_back(new Unit(SCISSORS, (int)pos.first, (int)pos.second));
+        printf("%d, %d\n", (int)pos.first, (int)pos.second);
+    }
+    printf("Entites:%d", (int)entities.size());
     return true;
 }
 
@@ -43,6 +53,10 @@ void PlayState::update()
 
 void PlayState::render()
 {
+    for (Entity *e : entities)
+    {
+        e->render();
+    }
     // background->render();
 }
 
@@ -52,11 +66,10 @@ std::pair<double, double> PlayState::randBorn(int centerX, int centerY, int p_di
     double length;
     double degree;
 
-    srand(time(NULL));
     length = rand() % (p_diameter / 2);
     degree = rand() % 360;
     sincos(degree * M_PI / 180, &Y, &X);
-    X *= length;
-    Y *= length;
+    X = X * length + centerX;
+    Y = Y * length + centerY;
     return std::pair<double, double>(X, Y);
 }
