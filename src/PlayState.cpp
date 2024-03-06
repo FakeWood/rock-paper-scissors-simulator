@@ -94,9 +94,12 @@ void PlayState::updateUnits()
     for (Unit *cur : units)
     {
         double winDist = Global::gSCREEN_WIDTH;
+        double loseDist = Global::gSCREEN_WIDTH;
+
         double tempDist = 0.0;
 
         Unit *winUnitNear = nullptr;
+        Unit *loseUnitNear = nullptr;
 
         // Find the nearest
         for (Unit *u : units)
@@ -113,25 +116,50 @@ void PlayState::updateUnits()
                 winDist = tempDist;
                 winUnitNear = u;
             }
+            else if (cur->getLoseType() == u->getType() && tempDist < loseDist)
+            {
+                loseDist = tempDist;
+                loseUnitNear = u;
+            }
         }
 
-        if (winUnitNear == nullptr)
-        {
-            continue;
-        }
+        double x, chaseX, runX;
+        double y, chaseY, runY;
 
-        double x;
-        double y;
-
-        if (winDist < cur->getColli().radius * 2)
+        if (winUnitNear != nullptr)
         {
-            winUnitNear->setType(cur->getType());
+            if (winDist < cur->getColli().radius * 2)
+            {
+                winUnitNear->setType(cur->getType());
+                continue;
+            }
+
+            chaseX = (winUnitNear->getX() - cur->getX()) / winDist;
+            chaseY = (winUnitNear->getY() - cur->getY()) / winDist;
         }
         else
         {
-            x = (winUnitNear->getX() - cur->getX()) / winDist;
-            y = (winUnitNear->getY() - cur->getY()) / winDist;
-            cur->setDir(std::pair<double, double>(x, y));
+            chaseX = chaseY = winDist = 0;
         }
+
+        if (loseUnitNear != nullptr)
+        {
+            runX = (cur->getX() - loseUnitNear->getX()) / loseDist;
+            runY = (cur->getY() - loseUnitNear->getY()) / loseDist;
+        }
+        else
+        {
+            runX = runY = loseDist = 0;
+        }
+
+        x = chaseX + runX;
+        y = chaseY + runY;
+
+        double dist = hypot(x, y);
+
+        x /= dist;
+        y /= dist;
+
+        cur->setDir(std::pair<double, double>(x, y));
     }
 }
