@@ -18,19 +18,19 @@ bool PlayState::enter()
 {
     srand(time(NULL));
     Unit::imgsInit();
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 7; i++)
     {
         std::pair<double, double> pos = randBorn(Global::gSCREEN_WIDTH / 2, Global::gSCREEN_HEIGHT / 2, 600);
         units.emplace_back(new Unit(ROCK, (int)pos.first, (int)pos.second));
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 7; i++)
     {
         std::pair<double, double> pos = randBorn(Global::gSCREEN_WIDTH / 2, Global::gSCREEN_HEIGHT / 2, 600);
         units.emplace_back(new Unit(PAPER, (int)pos.first, (int)pos.second));
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 7; i++)
     {
         std::pair<double, double> pos = randBorn(Global::gSCREEN_WIDTH / 2, Global::gSCREEN_HEIGHT / 2, 600);
         units.emplace_back(new Unit(SCISSORS, (int)pos.first, (int)pos.second));
@@ -95,23 +95,26 @@ void PlayState::updateUnits()
     {
         double winDist = Global::gSCREEN_WIDTH;
         double loseDist = Global::gSCREEN_WIDTH;
+        double sameDist = Global::gSCREEN_WIDTH;
 
         double tempDist = 0.0;
 
         Unit *winUnitNear = nullptr;
         Unit *loseUnitNear = nullptr;
+        Unit *sameUnitNear = nullptr;
 
         // Find the nearest
         for (Unit *u : units)
         {
-            if (cur->getType() == u->getType())
-            {
-                continue;
-            }
 
             tempDist = hypot(u->getX() - cur->getX(), u->getY() - cur->getY()); // caculate the distance
 
-            if (cur->getWinType() == u->getType() && tempDist < winDist)
+            if (cur->getType() == u->getType() && cur != u && tempDist < sameDist)
+            {
+                sameDist = tempDist;
+                sameUnitNear = u;
+            }
+            else if (cur->getWinType() == u->getType() && tempDist < winDist)
             {
                 winDist = tempDist;
                 winUnitNear = u;
@@ -123,8 +126,8 @@ void PlayState::updateUnits()
             }
         }
 
-        double x, chaseX, runX;
-        double y, chaseY, runY;
+        double x, chaseX, runX, awayX;
+        double y, chaseY, runY, awayY;
 
         if (winUnitNear != nullptr)
         {
@@ -152,6 +155,17 @@ void PlayState::updateUnits()
             runX = runY = loseDist = 0;
         }
 
+        // not too close
+        if (sameDist < cur->getColli().radius * 2)
+        {
+            awayX = (cur->getX() - sameUnitNear->getX()) * Global::gSCREEN_WIDTH;
+            awayY = (cur->getY() - sameUnitNear->getY()) * Global::gSCREEN_WIDTH;
+        }
+        else
+        {
+            awayX = awayY = 0;
+        }
+
         // closer -> faster
         if (winDist != 0)
         {
@@ -166,8 +180,8 @@ void PlayState::updateUnits()
         }
 
         // turn into unit direction
-        x = chaseX + runX;
-        y = chaseY + runY;
+        x = chaseX + runX + awayX;
+        y = chaseY + runY + awayY;
 
         double dist = hypot(x, y);
 
