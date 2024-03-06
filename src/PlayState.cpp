@@ -171,8 +171,11 @@ void PlayState::updateUnits()
 
         double dist = hypot(x, y);
 
-        x /= dist;
-        y /= dist;
+        if (dist != 0)
+        {
+            x /= dist;
+            y /= dist;
+        }
 
         cur->setDir(std::pair<double, double>(x, y));
     }
