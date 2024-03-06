@@ -4,7 +4,7 @@ SDL_Texture *Unit::imgs[3] = {0};
 
 Unit::Unit(Type p_type, int p_xPos, int p_yPos)
 {
-    speed = 20.0;
+    speed = 2.0;
 
     setType(p_type);
 

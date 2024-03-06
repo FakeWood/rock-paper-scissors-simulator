@@ -152,6 +152,20 @@ void PlayState::updateUnits()
             runX = runY = loseDist = 0;
         }
 
+        // closer -> faster
+        if (winDist != 0)
+        {
+            runX *= winDist;
+            runY *= winDist;
+        }
+
+        if (loseDist != 0)
+        {
+            chaseX *= loseDist;
+            chaseY *= loseDist;
+        }
+
+        // turn into unit direction
         x = chaseX + runX;
         y = chaseY + runY;
 
